@@ -15,7 +15,7 @@ namespace ConsoleApp5
     {
         public bool success { get; set; }
         public string message { get; set; }
-        public Coin [] result { get; set; }
+        public Coin[] result { get; set; }
     }
 
     public class Coin
@@ -35,21 +35,22 @@ namespace ConsoleApp5
         public string Created { get; set; }
     }
 
-       
+
     class Program
     {
 
         static void Main(string[] args)
         {   //указываем ссылку для запроса
             string urlRequest = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
-            
-            Console.ReadLine();
+            Console.WriteLine("Введите %, который будет использоваться для подсчета");
+
+            CoinInit(urlRequest, float.Parse(Console.ReadLine()));
 
         }
         //Method get for coin last price
         //Increased in % 
         //And return array value
-        private static double [] CoinInit(string url, float rate)
+        private static double[] CoinInit(string url, float rate)
         {   // формируем запрос
             WebRequest bittrexApi = WebRequest.Create(url);
             //получаем ответ в поток
@@ -59,15 +60,13 @@ namespace ConsoleApp5
             //Десериализация файла JSON. Открытие его, десериализация в переменную infoCoin 
             InfoCoin infoCoin = new InfoCoin();
             infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
-            double[] resultLastCost = new double [infoCoin.result.Length];
-            for (int i=0;i<infoCoin.result.Length;i++)
-               resultLastCost[i] = infoCoin.result[i].Last*rate+infoCoin.result[i].Last;
+            double[] resultLastCost = new double[infoCoin.result.Length];
+            for (int i = 0; i < infoCoin.result.Length; i++)
+                resultLastCost[i] = infoCoin.result[i].Last * rate + infoCoin.result[i].Last;
             return resultLastCost;//f
         }
         private static void FindCoinForBuy()
-        {  Console.WriteLine("Наименование пары: {0}, значение: {1}", );
-        }
-        {
+        { Console.WriteLine("Наименование пары: {0}, значение: {1}");
 
         }
     }
