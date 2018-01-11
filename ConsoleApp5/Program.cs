@@ -43,7 +43,7 @@ namespace ConsoleApp5
         {   //указываем ссылку для запроса
             string urlRequest = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
             Console.WriteLine("Введите %, который будет использоваться для подсчета");
-
+            //method for create array of last rate and increased in rate
             CoinInit(urlRequest, float.Parse(Console.ReadLine()));
 
         }
@@ -61,8 +61,8 @@ namespace ConsoleApp5
             infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
             double[] resultLastCost = new double[infoCoin.result.Length];
             for (int i = 0; i < infoCoin.result.Length; i++)
-                resultLastCost[i] = infoCoin.result[i].Last * rate + infoCoin.result[i].Last;
-            return resultLastCost;//f
+                resultLastCost[i] = infoCoin.result[i].Last * rate/100 + infoCoin.result[i].Last;
+            return resultLastCost;
         }
         private static void FindCoinForBuy()
         { Console.WriteLine("Наименование пары: {0}, значение: {1}");
