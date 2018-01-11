@@ -48,8 +48,7 @@ namespace ConsoleApp5
 
         }
         //Method get for coin last price
-        //Increased in % 
-        //And return array value
+        
         private static double[] CoinInit(string url, float rate)
         {   // формируем запрос
             WebRequest bittrexApi = WebRequest.Create(url);
