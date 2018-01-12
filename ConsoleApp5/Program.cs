@@ -44,12 +44,16 @@ namespace ConsoleApp5
             string urlRequest = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
             Console.WriteLine("Введите %, который будет использоваться для подсчета");
             //method for create array of last rate and increased in rate
-            CoinInit(urlRequest, float.Parse(Console.ReadLine()));
+            int arrayLength;
+            CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
+            double[] basisArray = new double [arrayLength];
+            for (int i = 0; i < arrayLength; i++)
+            FindCoinForBuy(urlRequest, CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength));
 
         }
         //Method get for coin last price
         
-        private static double[] CoinInit(string url, float rate)
+        private static double[] CoinInit(string url, float rate, out int lengthArray)
         {   // формируем запрос
             WebRequest bittrexApi = WebRequest.Create(url);
             //получаем ответ в поток
@@ -62,10 +66,23 @@ namespace ConsoleApp5
             double[] resultLastCost = new double[infoCoin.result.Length];
             for (int i = 0; i < infoCoin.result.Length; i++)
                 resultLastCost[i] = infoCoin.result[i].Last * rate/100 + infoCoin.result[i].Last;
+            lengthArray = infoCoin.result.Length;
             return resultLastCost;
         }
-        private static void FindCoinForBuy()
-        { Console.WriteLine("Наименование пары: {0}, значение: {1}");
+        private static void FindCoinForBuy(string url, double [] basisArray)
+
+        {
+            WebRequest bittrexApi = WebRequest.Create(url);
+            //получаем ответ в поток
+            Stream streamBittrex = bittrexApi.GetResponse().GetResponseStream();
+            //Создание класса для десериализации
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(InfoCoin));
+            //Десериализация файла JSON. Открытие его, десериализация в переменную infoCoin 
+            InfoCoin infoCoin = new InfoCoin();
+            infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
+            for (int i=0; i<basisArray.Length; i++)
+            if (infoCoin.result[i].Last < basisArray [i])
+            Console.WriteLine("Наименование пары: {0}, значение: {1}", infoCoin.result[i].Last, infoCoin.result[i].MarketName);
 
         }
     }
