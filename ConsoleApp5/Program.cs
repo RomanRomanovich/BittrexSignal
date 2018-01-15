@@ -48,8 +48,10 @@ namespace ConsoleApp5
             //method for create array of last rate and increased in rate
             int arrayLength;
             CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
-            double [] basisArray = new double [arrayLength];
+            double [] basisArray =  new double [arrayLength];
             basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
+
+            //Find coin, which increased more than 0,5%
 
             FindCoinForBuy(urlRequest, CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength));
 
