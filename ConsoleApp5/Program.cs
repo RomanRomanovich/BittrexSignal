@@ -45,19 +45,17 @@ namespace ConsoleApp5
         {   //указываем ссылку для запроса
             string urlRequest = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
             Console.WriteLine("Введите %, который будет использоваться для подсчета");
+           
             //method for create array of last rate and increased in rate
-            int arrayLength;
-            CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
+            CoinInit(urlRequest, float.Parse(Console.ReadLine()), out int arrayLength);
             double [] basisArray =  new double [arrayLength];
             basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
 
             //Find coin, which increased more than 0,5%
-
-            FindCoinForBuy(urlRequest, CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength));
+            FindCoinForBuy(urlRequest, basisArray);
 
         }
         //Method get for coin last price
-        
         private static double[] CoinInit(string url, float rate, out int lengthArray)
         {   // формируем запрос
             WebRequest bittrexApi = WebRequest.Create(url);
@@ -87,9 +85,7 @@ namespace ConsoleApp5
             infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
            for (int i=0;i<basisArray.Length;i++)
              if (infoCoin.result[i].Last > basisArray[i])
-
-            
-
+                    Console.WriteLine("=>Coin {0} grow up, may be need buy!", infoCoin.result[i].MarketName );
         }
     }
 }
