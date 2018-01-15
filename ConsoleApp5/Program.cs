@@ -85,9 +85,10 @@ namespace ConsoleApp5
             //Десериализация файла JSON. Открытие его, десериализация в переменную infoCoin 
             InfoCoin infoCoin = new InfoCoin();
             infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
-            for (int i=0; i<basisArray.Length; i++)
-            if (infoCoin.result[i].Last < basisArray [i])
-            Console.WriteLine("Наименование пары: {0}, значение: {1}", infoCoin.result[i].Last, infoCoin.result[i].MarketName);
+           for (int i=0;i<basisArray.Length;i++)
+             if (infoCoin.result[i].Last > basisArray[i])
+
+            
 
         }
     }
