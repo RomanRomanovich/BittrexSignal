@@ -33,6 +33,8 @@ namespace ConsoleApp5
         public int OpenSellOrders { get; set; }
         public float PrevDay { get; set; }
         public string Created { get; set; }
+
+        
     }
 
 
@@ -46,8 +48,9 @@ namespace ConsoleApp5
             //method for create array of last rate and increased in rate
             int arrayLength;
             CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
-            double[] basisArray = new double [arrayLength];
-            for (int i = 0; i < arrayLength; i++)
+            double [] basisArray = new double [arrayLength];
+            basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
+
             FindCoinForBuy(urlRequest, CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength));
 
         }
