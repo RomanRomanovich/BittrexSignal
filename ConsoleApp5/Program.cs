@@ -50,9 +50,18 @@ namespace ConsoleApp5
             CoinInit (urlRequest, out int arrayLength);
             double [] basisArray =  new double [arrayLength];
             basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()));
+            ConsoleKeyInfo key = Console.ReadKey();
+            
 
-            //Find coin, which increased more than 0,5%
-            FindCoinForBuy(urlRequest, basisArray);
+            while (key.Key != ConsoleKey.Escape)
+            { 
+                Thread.Sleep(3000);
+                FindCoinForBuy(urlRequest, basisArray);
+                key = Console.ReadKey();
+
+            }
+            //Find coin, which increased more than x%
+
             Console.ReadLine();
 
         }
@@ -103,7 +112,7 @@ namespace ConsoleApp5
            for (int i=0;i<basisArray.Length;++i)
              if (infoCoin.result[i].Last > basisArray[i])
                 { 
-                    Console.WriteLine("=>Coin {0} grow up, may be need buy!", infoCoin.result[i].MarketName );
+                    Console.WriteLine("=>Coin {0} grow up. Last: {1}, Curent: {2}!", infoCoin.result[i].MarketName, basisArray[i], infoCoin.result[i].Last);
                     colCoin = ++colCoin;
                 }
             Console.WriteLine("Count coin: {0}", colCoin);
