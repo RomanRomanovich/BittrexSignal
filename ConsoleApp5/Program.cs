@@ -53,6 +53,7 @@ namespace ConsoleApp5
 
             //Find coin, which increased more than 0,5%
             FindCoinForBuy(urlRequest, basisArray);
+            Console.ReadLine();
 
         }
         //Method get for coin last price
@@ -83,9 +84,15 @@ namespace ConsoleApp5
             //Десериализация файла JSON. Открытие его, десериализация в переменную infoCoin 
             InfoCoin infoCoin = new InfoCoin();
             infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
-           for (int i=0;i<basisArray.Length;i++)
+            int colCoin = 0;
+           for (int i=0;i<basisArray.Length;++i)
              if (infoCoin.result[i].Last > basisArray[i])
+                { 
                     Console.WriteLine("=>Coin {0} grow up, may be need buy!", infoCoin.result[i].MarketName );
+                    colCoin = ++colCoin;
+                }
+            Console.WriteLine("Count coin: {0}", colCoin);
+            Console.WriteLine(basisArray.Length);
         }
     }
 }
