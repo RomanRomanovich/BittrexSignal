@@ -47,9 +47,9 @@ namespace ConsoleApp5
             Console.WriteLine("Введите %, который будет использоваться для подсчета");
            
             //method for create array of last rate and increased in rate
-            CoinInit(urlRequest, float.Parse(Console.ReadLine()), out int arrayLength);
+            CoinInit (urlRequest, out int arrayLength);
             double [] basisArray =  new double [arrayLength];
-            basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()), out arrayLength);
+            basisArray = CoinInit(urlRequest, float.Parse(Console.ReadLine()));
 
             //Find coin, which increased more than 0,5%
             FindCoinForBuy(urlRequest, basisArray);
@@ -57,7 +57,7 @@ namespace ConsoleApp5
 
         }
         //Method get for coin last price
-        private static double[] CoinInit(string url, float rate, out int lengthArray)
+        private static double[] CoinInit(string url, float rate)
         {   // формируем запрос
             WebRequest bittrexApi = WebRequest.Create(url);
             //получаем ответ в поток
@@ -70,9 +70,24 @@ namespace ConsoleApp5
             double[] resultLastCost = new double[infoCoin.result.Length];
             for (int i = 0; i < infoCoin.result.Length; i++)
                 resultLastCost[i] = infoCoin.result[i].Last * rate/100 + infoCoin.result[i].Last;
+        return resultLastCost;
+        }
+
+        private static double[] CoinInit(string url, out int lengthArray)
+        {   // формируем запрос
+            WebRequest bittrexApi = WebRequest.Create(url);
+            //получаем ответ в поток
+            Stream streamBittrex = bittrexApi.GetResponse().GetResponseStream();
+            //Создание класса для десериализации
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(InfoCoin));
+            //Десериализация файла JSON. Открытие его, десериализация в переменную infoCoin 
+            InfoCoin infoCoin = new InfoCoin();
+            infoCoin = (InfoCoin)jsonSerializer.ReadObject(streamBittrex);
+            double[] resultLastCost = new double[infoCoin.result.Length];
             lengthArray = infoCoin.result.Length;
             return resultLastCost;
         }
+
         private static void FindCoinForBuy(string url, double [] basisArray)
 
         {
